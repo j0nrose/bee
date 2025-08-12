@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Native Bees</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #f7b731;
+            --secondary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f7b731" width="1200" height="600"/><circle fill="%23e67e22" cx="200" cy="150" r="50" opacity="0.7"/><circle fill="%23e67e22" cx="800" cy="300" r="70" opacity="0.5"/><circle fill="%23e67e22" cx="1000" cy="100" r="40" opacity="0.6"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            color: var(--text-dark);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.4s both;
+            box-shadow: 0 4px 15px rgba(247, 183, 49, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(247, 183, 49, 0.4);
+        }
+
+        /* Species Section */
+        .species-section {
+            background: var(--white);
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--secondary-color);
+        }
+
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .species-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(247, 183, 49, 0.1);
+        }
+
+        .species-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .species-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .species-info {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .species-description {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--bg-light);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            background: var(--white);
+            border: 2px solid var(--primary-color);
+            color: var(--text-dark);
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Conservation Section */
+        .conservation-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .conservation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .conservation-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .conservation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .conservation-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 15px var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .species-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .conservation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .species-card {
+                padding: 1.5rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">California Bees</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#species">Species</a></li>
+                <li><a href="#conservation">Conservation</a></li>
+                <li><a href="#resources">Resources</a></li>
+            </ul>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>California Native Bees</h1>
+                <p>Discover the incredible diversity of California's native bee species and learn how to protect these essential pollinators</p>
+                <a href="#species" class="cta-button">Explore Species</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <div class="container">
+            <h2>Filter by Type</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterSpecies('all')">All Species</button>
+                <button class="filter-btn" onclick="filterSpecies('carpenter')">Carpenter Bees</button>
+                <button class="filter-btn" onclick="filterSpecies('mason')">Mason Bees</button>
+                <button class="filter-btn" onclick="filterSpecies('leafcutter')">Leafcutter Bees</button>
+                <button class="filter-btn" onclick="filterSpecies('sweat')">Sweat Bees</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="species" class="species-section">
+        <div class="container">
+            <h2 class="section-title">Native Bee Species</h2>
+            <div class="species-grid" id="species-grid">
+                <div class="species-card fade-in" data-type="carpenter">
+                    <h3>California Carpenter Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Xylocopa californica</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>20-25mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>March - October</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Coastal areas, gardens</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Large, robust bees with shiny black bodies. Females excavate tunnels in wood for nesting. Important pollinators of open-faced flowers and excellent for native plant gardens.
+                    </p>
+                </div>
+
+                <div class="species-card fade-in" data-type="mason">
+                    <h3>Blue Orchard Mason Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Osmia lignaria</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>12-14mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>March - June</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Orchards, woodlands</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Metallic blue-black solitary bees that nest in hollow stems and holes. Extremely efficient pollinators of fruit trees, working even in cool weather when honeybees remain inactive.
+                    </p>
+                </div>
+
+                <div class="species-card fade-in" data-type="leafcutter">
+                    <h3>Alfalfa Leafcutter Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Megachile rotundata</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>8-12mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>June - September</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Agricultural areas, gardens</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Medium-sized bees that cut circular pieces from leaves to construct their nests. Essential for alfalfa seed production and highly efficient at pollinating legumes.
+                    </p>
+                </div>
+
+                <div class="species-card fade-in" data-type="sweat">
+                    <h3>California Sweat Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Halictus tripartitus</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>6-10mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>April - October</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Gardens, meadows, urban areas</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Small, metallic green bees that nest in soil. Highly social with complex colony structures. Important pollinators of wildflowers and crops, attracted to human perspiration.
+                    </p>
+                </div>
+
+                <div class="species-card fade-in" data-type="mason">
+                    <h3>Yellow-faced Bumble Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Bombus vosnesenskii</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>15-20mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>February - November</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Coastal scrub, gardens</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Robust social bees with distinctive yellow faces and fuzzy bodies. Form colonies with up to 200 workers. Excellent buzz pollinators for tomatoes and native California plants.
+                    </p>
+                </div>
+
+                <div class="species-card fade-in" data-type="leafcutter">
+                    <h3>Wool Carder Bee</h3>
+                    <div class="species-info">
+                        <div class="info-item">
+                            <span class="info-label">Scientific Name:</span>
+                            <span>Anthidium manicatum</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Size:</span>
+                            <span>11-17mm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Flight Season:</span>
+                            <span>May - September</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Habitat:</span>
+                            <span>Gardens, urban areas</span>
+                        </div>
+                    </div>
+                    <p class="species-description">
+                        Medium-sized bees that collect plant fibers to line their nests. Males are territorial and defend flowers aggressively. Excellent pollinators of mint family plants and garden flowers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="conservation" class="conservation-section">
+        <div class="container">
+            <h2 class="section-title">Conservation Efforts</h2>
+            <div class="conservation-grid">
+                <div class="conservation-card fade-in">
+                    <h3>Habitat Restoration</h3>
+                    <p>Creating and maintaining native plant gardens that provide year-round blooms and nesting sites for California's diverse bee populations.</p>
+                </div>
+                <div class="conservation-card fade-in">
+                    <h3>Pesticide Reduction</h3>
+                    <p>Promoting integrated pest management and organic farming practices to reduce harmful chemical exposure to pollinators.</p>
+                </div>
+                <div class="conservation-card fade-in">
+                    <h3>Research & Monitoring</h3>
+                    <p>Conducting ongoing studies to track bee population trends and identify conservation priorities across California ecosystems.</p>
+                </div>
+                <div class="conservation-card fade-in">
+                    <h3>Community Education</h3>
+                    <p>Teaching the public about native bee identification, habitat creation, and the importance of pollinator conservation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="resources">
+        <div class="container">
+            <p>&copy; 2024 California Native Bees. Protecting pollinators for future generations.</p>
+            <p>For more information, visit the California Native Bee Society and UC Berkeley's Urban Bee Lab.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Filter species functionality
+        function filterSpecies(type) {
+            const cards = document.querySelectorAll('.species-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter cards
+            cards.forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile menu after clicking
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background change on scroll
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Add loading animation delay to species cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.species-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
